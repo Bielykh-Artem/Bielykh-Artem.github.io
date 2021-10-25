@@ -37,19 +37,20 @@ html, body {
 .menu > ul {
     margin-top: 50px;
     padding: 0px;
-    list-style-type: none;
+    list-style-type: none !important;
+    display: table;
+    width: 250px;
 }
 .menu > ul > li {
     font-size: 14px;
-    display: flex;
-    align-items: center;
-    height: 40px;
-    padding-left: 10px;
+    min-height: 30px;
+    padding: 10px;
+    line-height: 30px;
     border-bottom: 1px solid rgba(153, 153, 153, 0.5);
 }
-.menu > ul > li > a {
+.menu > ul > li > a, a {
     color: rgba(255, 255, 255, 255);
-    text-decoration: none;
+    text-decoration: none !important;
 }
 .sidebar-footer {
     text-align: center;
@@ -73,5 +74,5 @@ h3 {
 }
 
 .list {
-
+    line-height: 28px !important;
 }

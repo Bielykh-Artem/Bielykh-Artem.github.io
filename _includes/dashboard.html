@@ -1,6 +1,6 @@
 <div class="dashboard">
     <h1>Utils:</h1>
-    <div>
+    <div id="createActionTypes">
         <h3>createActionTypes</h3>
         <p>Creates action types for actions based on a list of unique constants.</p>
     </div>
@@ -26,13 +26,13 @@
                 }
             </code>
         </pre>
-        <p>Arguments <b>createActionTypes(constantsForActions, prefixes)</b>:</p>
+        <p>Arguments <b>createActionTypes(constantsForActions: string[], prefixes?: string[], additionalOptions?: IActionTypesOpts)</b>:</p>
         <ul class="list">
             <li><b>constantsForActions (required)</b> - a list of unique constants based</li>
             <li><b>prefixes (optional)</b> - if not passed, then the default prefix list is used. Default prefixes: <b>REQUEST, SUCCESS, FAILURE</b>. If additional prefixes are passed then additional prefixes will be added to the default prefix list</li>
             <li><b>additionalOptions (optional):</b>
                 <ul>
-                    <li>useOnlyCustomPrefixes - Default prefixes will be ignored</li>
+                    <li><b>useOnlyCustomPrefixes?: boolean</b> - Default prefixes will be ignored. By default = false</li>
                 </ul>
             </li>
         </ul>
@@ -88,6 +88,221 @@
                         CLEAR: "SIGN_UP_CLEAR" // only additional prefix
                     }
                 }
+            </code>
+        </pre>
+        <p>How to use in <b>Reducers</b>:</p>
+        <pre>
+            <code class="javascript">
+                // ./constants/index.ts
+
+                import { createActionTypes } from 'react-redux-jedi';
+                
+                const authConstants = ['SIGN_IN', 'SIGN_UP'];
+                export default createActionTypes(authConstants);
+
+                // ./reducers/index.ts
+                import constants from './constants';
+
+                // ...
+                switch (action.type) {
+                    case constants.SIGN_IN.REQUEST:
+                        // TODO
+                    case constants.SIGN_IN.SUCCESS:
+                        // TODO
+                    case constants.SIGN_IN.FAILURE:
+                        // TODO
+                    dafailt: 
+                        return initialState
+                }
+
+            </code>
+        </pre>
+        <p>How to use with <b>Sagas</b>:</p>
+        <pre>
+            <code class="javascript">
+                // ./constants/index.ts
+
+                import { createActionTypes } from 'react-redux-jedi';
+                
+                const authConstants = ['SIGN_IN', 'SIGN_UP'];
+                export default createActionTypes(authConstants);
+
+                // ./actions/index.ts
+                import { createActionTypes } from 'react-redux-jedi';
+                import { authConstants } from './constants';
+
+                export default createActions(authConstants);
+
+                // ./sagas/index.ts
+                import constants from './constants';
+                import actions from './actions';
+
+                function* workerSaga({ payload, cb, options }) {
+                    try {
+                        // yield call to API and put to SUCCESS action data from API
+                        yield put(actions.SIGN_IN.SUCCESS(data));
+                    } catch {
+                        yield put(actions.SIGN_IN.FAILURE(err as Object));
+                    } finally {
+                        cb?.();
+                    }
+                }
+
+                export const watcherSaga = function* () {
+                  yield takeLatest(constants.SIGN_IN.REQUEST, workerSaga);
+                };
+            </code>
+        </pre>
+    </div>
+    <div id="createActions">
+        <h3>createActions</h3>
+        <p>Created actions based on a list of unique constants.</p>
+    </div>
+    <p>How to use:</p>
+    <div>
+        <p>Example:</p>
+        <pre>
+            <code class="javascript">
+                // ./constants/index.ts
+    
+                export const authConstants = ['SIGN_IN', 'SIGN_UP'];
+            </code>
+        </pre>
+        <pre>
+            <code class="javascript">
+                // ./actions/index.ts
+                
+                import { createActionTypes } from 'react-redux-jedi';
+                import { authConstants } from './constants';
+
+                export default createActions(authConstants);
+            </code>
+        </pre>
+        <p>Result:</p>
+        <pre>
+            <code class="javascript">
+                {
+                    SIGN_IN: {
+                        FAILURE: (payload, cb, options) => {…}
+                        REQUEST: (payload, cb, options) => {…}
+                        SUCCESS: (payload, cb, options) => {…}
+                    },
+                    SIGN_UP: {
+                        FAILURE: (payload, cb, options) => {…}
+                        REQUEST: (payload, cb, options) => {…}
+                        SUCCESS: (payload, cb, options) => {…}
+                    }
+                }
+            </code>
+        </pre>
+        <p>Arguments <b>createActions(constantsForActions: string[], prefixes?: string[], additionalOptions?: IActionsOpts)</b>:</p>
+        <ul class="list">
+            <li><b>constantsForActions (required)</b> - a list of unique constants based</li>
+            <li><b>prefixes (optional)</b> - if not passed, then the default prefix list is used. Default prefixes: <b>REQUEST, SUCCESS, FAILURE</b>. If additional prefixes are passed then additional prefixes will be added to the default prefix list</li>
+            <li><b>additionalOptions (optional):</b>
+                <ul>
+                    <li><b>useOnlyCustomPrefixes?: boolean</b> - Default prefixes will be ignored. By default = false</li>
+                    <li><b>withCallback?: boolean</b> - action has callback function. By default = false</li>
+                    <li><b>withOptions?: boolean</b> - action has additional options. By default = false</li>
+                    <li><b>useActionAliasName?: boolean</b> - convert constants to action name (Example: <b>SIGN_IN.REQUEST()</b> convert to <b>signInRequest()</b>). By default = false</li>
+                </ul>
+            </li>
+        </ul>
+        <p>Example <b>useActionAliasName = true</b>:</p>
+        <pre>
+            <code class="javascript">
+                // ./constants/index.ts
+    
+                export const authConstants = ['SIGN_IN', 'SIGN_UP'];
+
+                // ./actions/index.ts
+                
+                import { createActionTypes } from 'react-redux-jedi';
+                import { authConstants } from './constants';
+
+                export default createActions(authConstants, [], { useOnlyCustomPrefixes: true })
+            </code>
+        </pre>
+        <p>Result:</p>
+        <pre>
+            <code class="javascript">
+                {
+                    signInFailure: payload => ({ type, payload })
+                    signInRequest: payload => ({ type, payload })
+                    signInSuccess: payload => ({ type, payload })
+                    signUpFailure: payload => ({ type, payload })
+                    signUpRequest: payload => ({ type, payload })
+                    signUpSuccess: payload => ({ type, payload })
+                }
+            </code>
+        </pre>
+        <p>Ho to use in components:</p>
+        <pre>
+            <code class="javascript">
+                import { useDispatch } from 'react-redux';
+                import { actions } from './actions'
+                const TestComponent = () => {
+                    const dispatch = useDispatch();
+
+                    const handleSubmitForm = (data: { email: string, pass: string }) => {
+                        dispatch(SIGN_IN.REQUEST(data, () => {
+                            // callback
+                        }))
+
+                        // or useActionAliasName = true
+
+                        dispatch(signInRequest(data, () => {
+                            // callback
+                        }))
+                    }
+                }
+            </code>
+        </pre>
+        <p>Ho to use with <b>sagas</b>:</p>
+        <pre>
+            <code class="javascript">
+                function* workerSaga({ payload, cb, options }) {
+                    try {
+                        // yield call to API and put to SUCCESS action data from API
+                        yield put(actions.SIGN_IN.SUCCESS(data));
+                    } catch {
+                        yield put(actions.SIGN_IN.FAILURE(err as Object));
+                    } finally {
+                        cb?.();
+                    }
+                }
+
+                export const watcherSaga = function* () {
+                  yield takeLatest(constants.SIGN_IN.REQUEST, workerSaga);
+                };
+            </code>
+        </pre>
+        <p>Ho to use with <b>redux-thunk</b>:</p>
+        <pre>
+            <code class="javascript">
+                // TODO
+            </code>
+        </pre>
+        <p>Ho to use with <b>redux-observable</b>:</p>
+        <pre>
+            <code class="javascript">
+                import { ofType, ActionsObservable } from 'redux-observable';
+                import actions from "./actions";
+                import constants from "./constants";
+
+                export const signInEpic = (action$: ActionsObservable<AnyAction>) =>
+                    action$.pipe(
+                      ofType(constants.SIGN_IN.REQUEST) // or actions.signInRequest
+                      mergeMap((data) => request(data.payload)),
+                      concatMap((data: AjaxResponse) => {
+                        return of(actions.signInSuccess(data.response));  // or actions.SIGN_IN.SUCCESS(data.response)
+                      }),
+                      catchError((error: AjaxError) => {
+                        return of(
+                          actions.signInFailure(parseError(error)), // or actions.SIGN_IN.FAILURE(error)
+                        );
+                      }),
+                    );
             </code>
         </pre>
     </div>
