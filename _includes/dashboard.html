@@ -1,0 +1,94 @@
+<div class="dashboard">
+    <h1>Utils:</h1>
+    <div>
+        <h3>createActionTypes</h3>
+        <p>Creates action types for actions based on a list of unique constants.</p>
+    </div>
+    <p>How to use:</p>
+    <div>
+        <p>Example:</p>
+        <pre>
+            <code class="javascript">
+                // ./constants/index.ts
+
+                import { createActionTypes } from 'react-redux-jedi';
+                const authConstants = ['SIGN_IN', 'SIGN_UP'];
+                
+                export default createActionTypes(authConstants);
+            </code>
+        </pre>
+        <p>Result:</p>
+        <pre>
+            <code class="javascript">
+                {
+                    SIGN_IN: {REQUEST: 'SIGN_IN_REQUEST', FAILURE: 'SIGN_IN_FAILURE', SUCCESS: 'SIGN_IN_SUCCESS'}
+                    SIGN_UP: {REQUEST: 'SIGN_UP_REQUEST', FAILURE: 'SIGN_UP_FAILURE', SUCCESS: 'SIGN_UP_SUCCESS'}
+                }
+            </code>
+        </pre>
+        <p>Arguments <b>createActionTypes(constantsForActions, prefixes)</b>:</p>
+        <ul class="list">
+            <li><b>constantsForActions (required)</b> - a list of unique constants based</li>
+            <li><b>prefixes (optional)</b> - if not passed, then the default prefix list is used. Default prefixes: <b>REQUEST, SUCCESS, FAILURE</b>. If additional prefixes are passed then additional prefixes will be added to the default prefix list</li>
+            <li><b>additionalOptions (optional):</b>
+                <ul>
+                    <li>useOnlyCustomPrefixes - Default prefixes will be ignored</li>
+                </ul>
+            </li>
+        </ul>
+        <p>Example with <b>additional prefixes</b>:</p>
+        <pre>
+            <code class="javascript">
+                // ./constants/index.ts
+
+                import { createActionTypes } from 'react-redux-jedi';
+                
+                const authConstants = ['SIGN_IN', 'SIGN_UP'];
+                export default createActionTypes(authConstants, ['CLEAR']);
+            </code>
+        </pre>
+        <p>Result:</p>
+        <pre>
+            <code class="javascript">
+                {
+                    SIGN_IN: {
+                        CLEAR: "SIGN_IN_CLEAR" // additional prefix
+                        FAILURE: "SIGN_IN_FAILURE"
+                        REQUEST: "SIGN_IN_REQUEST"
+                        SUCCESS: "SIGN_IN_SUCCESS"
+                    },
+                    SIGN_UP: {
+                        CLEAR: "SIGN_UP_CLEAR" // additional prefix
+                        FAILURE: "SIGN_UP_FAILURE"
+                        REQUEST: "SIGN_UP_REQUEST"
+                        SUCCESS: "SIGN_UP_SUCCESS"
+                    }
+                }
+            </code>
+        </pre>
+        <p>Example with <b>useOnlyCustomPrefixes: true</b> :</p>
+        <pre>
+            <code class="javascript">
+                // ./constants/index.ts
+    
+                import { createActionTypes } from 'react-redux-jedi';
+                
+                const authConstants = ['SIGN_IN', 'SIGN_UP'];
+                export default createActionTypes(authConstants, ['CLEAR'], { useOnlyCustomPrefixes: true });
+            </code>
+        </pre>
+        <p>Result:</p>
+        <pre>
+            <code class="javascript">
+                {
+                    SIGN_IN: {
+                        CLEAR: "SIGN_IN_CLEAR" // only additional prefix
+                    },
+                    SIGN_UP: {
+                        CLEAR: "SIGN_UP_CLEAR" // only additional prefix
+                    }
+                }
+            </code>
+        </pre>
+    </div>
+</div>
