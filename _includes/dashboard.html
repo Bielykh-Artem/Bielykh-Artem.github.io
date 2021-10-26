@@ -280,7 +280,7 @@
         <p>Ho to use with <b>redux-thunk</b>:</p>
         <pre>
             <code class="javascript">
-                // TODO
+                // please use createThunkActions
             </code>
         </pre>
         <p>Ho to use with <b>redux-observable</b>:</p>
@@ -303,6 +303,84 @@
                         );
                       }),
                     );
+            </code>
+        </pre>
+    </div>
+    <div id="createThunkActions">
+        <h3>createThunkActions</h3>
+        <p>Created actions based on a list of unique constants for using together with redux-thunk lib.</p>
+    </div>
+    <p>Arguments <b>createThunkActions(constantsForActions: string[], prefixes?: string[], additionalOptions?: IActionsOpts)</b>:</p>
+    <ul class="list">
+        <li><b>constantsForActions (required)</b> - a list of unique constants based</li>
+        <li><b>prefixes (optional)</b> - if not passed, then the default prefix list is used. Default prefixes: <b>REQUEST, SUCCESS, FAILURE</b>. If additional prefixes are passed then additional prefixes will be added to the default prefix list</li>
+        <li><b>additionalOptions (optional):</b>
+            <ul>
+                <li><b>useOnlyCustomPrefixes?: boolean</b> - Default prefixes will be ignored. By default = false</li>
+                <li><b>withCallback?: boolean</b> - action has callback function. By default = false</li>
+                <li><b>withOptions?: boolean</b> - action has additional options. By default = false</li>
+                <li><b>useActionAliasName?: boolean</b> - convert constants to action name (Example: <b>SIGN_IN.REQUEST()</b> convert to <b>signInRequest()</b>). By default = false</li>
+            </ul>
+        </li>
+    </ul>
+    <p>How to use:</p>
+    <div>
+        <p>Example:</p>
+        <pre>
+            <code class="javascript">
+                // ./constants/index.ts
+    
+                export const authConstants = ['SIGN_IN', 'SIGN_UP'];
+
+                // ./actions/index.ts
+                
+                import { createActionTypes } from 'react-redux-jedi';
+                import { authConstants } from './constants';
+
+                export default createThunkActions(authConstants)
+            </code>
+        </pre>
+        <p>Result:</p>
+        <pre>
+            <code class="javascript">
+                signInFailure: (payload, cb, options) => {…}
+                signInRequest: (<b>request</b>, payload, cb, options) => {…}
+                signInSuccess: (payload, cb, options) => {…}
+                signUpFailure: (payload, cb, options) => {…}
+                signUpRequest: (<b>request</b>, payload, cb, options) => {…}
+                signUpSuccess: (payload, cb, options) => {…}
+            </code>
+        </pre>
+        <p>How to use in <b>components</b>:</p>
+        <pre>
+            <code class="javascript">
+                // ./service/index.ts
+
+                export const sigIn = data => {
+                    return new Promise((resolve, reject) => {
+                      return api
+                        .post(url, data)
+                        .then(response => resolve(response))
+                        .catch(error => reject(error));
+                    });
+                  };
+                
+                // ./component/index.ts
+
+                import React from 'react';
+                import { sigIn } from './service';
+                import actions from './actions';
+                import { useDispatch } from 'react-redux';
+
+                const Login = () => {
+                    const dispatch = useDispatch();
+
+                    const handleSubmit = (data) => {
+                        dispatch(actions.signInRequest(sigIn, data))
+                    }
+
+                    // ....
+                }
             </code>
         </pre>
     </div>
