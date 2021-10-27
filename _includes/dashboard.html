@@ -11,8 +11,8 @@
             <code class="javascript">
                 // ./constants/index.ts
 
-                import { createActionTypes } from 'react-redux-jedi';
-                const authConstants = ['SIGN_IN', 'SIGN_UP'];
+                import { createActionTypes } from "react-redux-jedi";
+                const authConstants = ["SIGN_IN", "SIGN_UP"];
                 
                 export default createActionTypes(authConstants);
             </code>
@@ -21,8 +21,16 @@
         <pre>
             <code class="javascript">
                 {
-                    SIGN_IN: {REQUEST: 'SIGN_IN_REQUEST', FAILURE: 'SIGN_IN_FAILURE', SUCCESS: 'SIGN_IN_SUCCESS'}
-                    SIGN_UP: {REQUEST: 'SIGN_UP_REQUEST', FAILURE: 'SIGN_UP_FAILURE', SUCCESS: 'SIGN_UP_SUCCESS'}
+                    SIGN_IN: {
+                        REQUEST: "SIGN_IN_REQUEST",
+                        FAILURE: "SIGN_IN_FAILURE",
+                        SUCCESS: "SIGN_IN_SUCCESS"
+                    }
+                    SIGN_UP: {
+                        REQUEST: "SIGN_UP_REQUEST",
+                        FAILURE: "SIGN_UP_FAILURE",
+                        SUCCESS: "SIGN_UP_SUCCESS"
+                    }
                 }
             </code>
         </pre>
@@ -41,10 +49,10 @@
             <code class="javascript">
                 // ./constants/index.ts
 
-                import { createActionTypes } from 'react-redux-jedi';
+                import { createActionTypes } from "react-redux-jedi";
                 
-                const authConstants = ['SIGN_IN', 'SIGN_UP'];
-                export default createActionTypes(authConstants, ['CLEAR']);
+                const authConstants = ["SIGN_IN", "SIGN_UP"];
+                export default createActionTypes(authConstants, ["CLEAR"]);
             </code>
         </pre>
         <p>Result:</p>
@@ -71,10 +79,10 @@
             <code class="javascript">
                 // ./constants/index.ts
     
-                import { createActionTypes } from 'react-redux-jedi';
+                import { createActionTypes } from "react-redux-jedi";
                 
-                const authConstants = ['SIGN_IN', 'SIGN_UP'];
-                export default createActionTypes(authConstants, ['CLEAR'], { useOnlyCustomPrefixes: true });
+                const authConstants = ["SIGN_IN", "SIGN_UP"];
+                export default createActionTypes(authConstants, ["CLEAR"], { useOnlyCustomPrefixes: true });
             </code>
         </pre>
         <p>Result:</p>
@@ -95,13 +103,13 @@
             <code class="javascript">
                 // ./constants/index.ts
 
-                import { createActionTypes } from 'react-redux-jedi';
+                import { createActionTypes } from "react-redux-jedi";
                 
-                const authConstants = ['SIGN_IN', 'SIGN_UP'];
+                const authConstants = ["SIGN_IN", "SIGN_UP"];
                 export default createActionTypes(authConstants);
 
                 // ./reducers/index.ts
-                import constants from './constants';
+                import constants from "./constants";
 
                 // ...
                 switch (action.type) {
@@ -122,20 +130,20 @@
             <code class="javascript">
                 // ./constants/index.ts
 
-                import { createActionTypes } from 'react-redux-jedi';
+                import { createActionTypes } from "react-redux-jedi";
                 
-                const authConstants = ['SIGN_IN', 'SIGN_UP'];
+                const authConstants = ["SIGN_IN", "SIGN_UP"];
                 export default createActionTypes(authConstants);
 
                 // ./actions/index.ts
-                import { createActionTypes } from 'react-redux-jedi';
-                import { authConstants } from './constants';
+                import { createActionTypes } from "react-redux-jedi";
+                import { authConstants } from "./constants";
 
                 export default createActions(authConstants);
 
                 // ./sagas/index.ts
-                import constants from './constants';
-                import actions from './actions';
+                import constants from "./constants";
+                import actions from "./actions";
 
                 function* workerSaga({ payload, cb, options }) {
                     try {
@@ -165,15 +173,15 @@
             <code class="javascript">
                 // ./constants/index.ts
     
-                export const authConstants = ['SIGN_IN', 'SIGN_UP'];
+                export const authConstants = ["SIGN_IN", "SIGN_UP"];
             </code>
         </pre>
         <pre>
             <code class="javascript">
                 // ./actions/index.ts
                 
-                import { createActionTypes } from 'react-redux-jedi';
-                import { authConstants } from './constants';
+                import { createActionTypes } from "react-redux-jedi";
+                import { authConstants } from "./constants";
 
                 export default createActions(authConstants);
             </code>
@@ -213,12 +221,12 @@
             <code class="javascript">
                 // ./constants/index.ts
     
-                export const authConstants = ['SIGN_IN', 'SIGN_UP'];
+                export const authConstants = ["SIGN_IN", "SIGN_UP"];
 
                 // ./actions/index.ts
                 
-                import { createActionTypes } from 'react-redux-jedi';
-                import { authConstants } from './constants';
+                import { createActionTypes } from "react-redux-jedi";
+                import { authConstants } from "./constants";
 
                 export default createActions(authConstants, [], { useOnlyCustomPrefixes: true })
             </code>
@@ -239,8 +247,8 @@
         <p>Ho to use in components:</p>
         <pre>
             <code class="javascript">
-                import { useDispatch } from 'react-redux';
-                import { actions } from './actions'
+                import { useDispatch } from "react-redux";
+                import { actions } from "./actions"
                 const TestComponent = () => {
                     const dispatch = useDispatch();
 
@@ -286,7 +294,7 @@
         <p>Ho to use with <b>redux-observable</b>:</p>
         <pre>
             <code class="javascript">
-                import { ofType, ActionsObservable } from 'redux-observable';
+                import { ofType, ActionsObservable } from "redux-observable";
                 import actions from "./actions";
                 import constants from "./constants";
 
@@ -330,12 +338,12 @@
             <code class="javascript">
                 // ./constants/index.ts
     
-                export const authConstants = ['SIGN_IN', 'SIGN_UP'];
+                export const authConstants = ["SIGN_IN", "SIGN_UP"];
 
                 // ./actions/index.ts
                 
-                import { createActionTypes } from 'react-redux-jedi';
-                import { authConstants } from './constants';
+                import { createActionTypes } from "react-redux-jedi";
+                import { authConstants } from "./constants";
 
                 export default createThunkActions(authConstants)
             </code>
@@ -367,10 +375,10 @@
                 
                 // ./component/index.ts
 
-                import React from 'react';
-                import { sigIn } from './service';
-                import actions from './actions';
-                import { useDispatch } from 'react-redux';
+                import React from "react";
+                import { sigIn } from "./service";
+                import actions from "./actions";
+                import { useDispatch } from "react-redux";
 
                 const Login = () => {
                     const dispatch = useDispatch();
@@ -384,4 +392,103 @@
             </code>
         </pre>
     </div>
+    <h1>Routing:</h1>
+    <div id="renderRoute">
+        <h3>renderRoute</h3>
+        <p>Renders a list of routes based on the config. Allow child routes. The nesting level can be any.</p>
+    </div>
+    <p>How to use:</p>
+    <pre>
+        <code class="javascript">
+            // config example
+
+            export const publicRoutes = [
+                {
+                    path: "/login",
+                    exact: true,
+                    component: SighIn,
+                    children: [],
+                },
+                {
+                    path: "/registration",
+                    exact: true,
+                    component: SighUp,
+                    children: [],
+                },
+            ];
+
+            export const privateRoutes = [{
+                path: "/categories",
+                exact: true,
+                component: Categories,
+                children: [{
+                    {
+                        path: "/:category_id",
+                        exact: true,
+                        component: Category,
+                        children: [{
+                            path: "/products",
+                            exact: true,
+                            component: Products,
+                            children: [{
+                                path: "/:product_id",
+                                exact: true,
+                                component: Product,
+                                children: []
+                            }]
+                        }],
+                      },
+                }]
+            }]
+        </code>
+    </pre>
+    <pre>
+        <code class="javascript">
+            // src/index.ts
+
+            import React from "react";
+            import ReactDOM from "react-dom";
+            import App from "./App";
+            import { Provider } from "react-redux";
+            import store from "./store/index";
+            import history from "./history";
+            import { ConnectedRouter } from "connected-react-router";
+            import * as serviceWorker from "./serviceWorker";
+            import "./index.scss";
+
+            ReactDOM.render(
+              < Provider store={store} >
+                < ConnectedRouter history={history} >
+                  < App />
+                < / ConnectedRouter >
+              < / Provider >, document.getElementById("root")
+            );
+          
+            serviceWorker.unregister();
+        </code>
+    </pre>
+    <pre>
+        <code class="javascript">
+            // src/App.tsx
+
+            import { privateRoutes, publicRoutes } from "../src/routes";
+            import Main from "./Main.tsx";
+
+            < Switch >
+                {publicRoutes.map(route => renderRoute(null, route))}
+                < Main >{privateRoutes.map(route => renderRoute(null, route))}< / Main >
+            < / Switch >
+        </code>
+    </pre>
+    <pre>
+        <code class="javascript">
+            // src/Main.tsx
+
+            export default requireAuth(({ children }) => { // use your own requireAuth HOC
+                return (
+                  < div >{children}< / div >
+                );
+              });
+        </code>
+    </pre>
 </div>
