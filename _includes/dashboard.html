@@ -592,4 +592,53 @@
             }
         </code>
     </pre>
+    <div id="createReducer">
+        <h3>createReducer</h3>
+        <p>Allows not to use switch/case inside reducers.</p>
+    </div>
+    <p>How to use:</p>
+    <pre>
+        <code class="javascript">
+            // ./constants/index.ts
+
+            import { createActionTypes } from "react-redux-jedi";
+            const constants = ["FETCH_TODOS", "FETCH_TODO"];
+            
+            export default createActionTypes(constants);
+        </code>
+    </pre>
+    <pre>
+        <code class="javascript">
+            // ./reducer/index.ts
+
+            import { createReducer } from "react-redux-jedi";
+            import constants from "./constants";
+            import { ITodosState } frpm "./interfaces"
+
+            export default createReducer< ITodosState >(initialstate, {
+                [constants.FETCH_TODOS.REQUEST](state: ITodosState) {
+                  return {
+                    ...state,
+                    loading: true,
+                    error: null,
+                  };
+                },
+                [constants.FETCH_TODOS.SUCCEESS](state: ITodosState, action) {
+                    return {
+                      ...state,
+                      todos: action.payload
+                      loading: false,
+                      error: null,
+                    };
+                  },
+                [constants.FETCH_TODOS.FAILURE](state: ITodosState, action) {
+                    return {
+                      ...state,
+                      loading: false,
+                      error: action.payload.message,
+                    };
+                  },
+              });
+        </code>
+    </pre>
 </div>
