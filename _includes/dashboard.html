@@ -491,4 +491,105 @@
               });
         </code>
     </pre>
+    <div id="JediRoutes">
+        <h3>JediRoutes</h3>
+        <p>The component uses renderRoute method. All routes building logic is encapsulated inside the component.</p>
+    </div>
+    <p>How to use:</p>
+    <pre>
+        <code class="javascript">
+            // ./router/index.ts config example
+
+            export const publicRoutes = [
+                {
+                    path: "/login",
+                    exact: true,
+                    component: SighIn,
+                    children: [],
+                },
+                {
+                    path: "/registration",
+                    exact: true,
+                    component: SighUp,
+                    children: [],
+                },
+            ];
+
+            export const privateRoutes = [{
+                path: "/categories",
+                exact: true,
+                component: Categories,
+                children: [{
+                    {
+                        path: "/:category_id",
+                        exact: true,
+                        component: Category,
+                        children: [{
+                            path: "/products",
+                            exact: true,
+                            component: Products,
+                            children: [{
+                                path: "/:product_id",
+                                exact: true,
+                                component: Product,
+                                children: []
+                            }]
+                        }],
+                      },
+                }]
+            }]
+        </code>
+    </pre>
+    <pre>
+        <code class="javascript">
+            // ./router/requireAuth.tsx
+
+            import React, { useEffect } from "react";
+            import { Redirect } from "react-router";
+
+            export const RequireAuthHOC = (ComposedComponent) => {
+              return (props) => {
+                const isAuthenticated = true;
+                // TODO
+                return isAuthenticated ? < ComposedComponent {...props} / > : < Redirect to="/login" / >;
+              };
+            };
+        </code>
+    </pre>
+    <p>Props:</p>
+    <ul class="list">
+        <li><b>privateRouter (optional)</b> - List of private routes</li>
+        <li><b>publicRouter (optional)</b> - List of public routes</li>
+        <li><b>requireAuth (optional)</b> - Higher-order component for checking user authorization</li>
+        <li><b>redirectTo (required)</b> - If the route isn't found then the user will be redirected to that path</li>
+        <li><b>useSwitch (optional)</b> - Use Switch from react-router inside component. By default = true</li>
+    </ul>
+    <p>Route Config:</p>
+    <ul class="list">
+        <li><b>path (required)</b> - Page path</li>
+        <li><b>exact (required)</b> - Exact keyword is used only when you want to render a component when there is an exact match of route.</li>
+        <li><b>component (required)</b> - React Component or null</li>
+        <li><b>children (required)</b> - List of child routes or empty array</li>
+    </ul>
+    <pre>
+        <code class="javascript">
+            // ./src/App.tsx
+
+            import { JediRoutes } from "react-redux-jedi";
+            import { publicRoutes, privateRouter } from "./router/index.ts";
+            import { RequireAuthHOC } from "./router/requireAuth.tsx";
+
+            const App = () => {
+                return (
+                    < JediRoutes
+                        privateRouter={privateRouter};
+                        publicRouter={publicRoutes};
+                        requireAuth={RequireAuthHOC};
+                        redirectTo={"/login"};
+                        useSwitch={true};
+                    />
+                )
+            }
+        </code>
+    </pre>
 </div>
