@@ -1,5 +1,8 @@
 <div class="dashboard">
     <h1 id="install">Getting started:</h1>
+    <p class="info">
+        The library is under active development stage.
+    </p>
     <h3>How to install</h3>
     <pre>
         <code class="javascript">
@@ -650,6 +653,105 @@
                     };
                   },
               });
+        </code>
+    </pre>
+    <div id="createLoaderMiddleware">
+        <h3>createLoaderMiddleware</h3>
+        <p>Middleware that implements functionality for tracking the process of loading data in an application. Implemented two types for loading indicator.</p>
+    </div>
+    <p>How to use:</p>
+    <p class="warn"><b>Important!</b> The name of the constant must be in the following format: `{uniq_constant_name}_{REQUEST | SUCCESS | FAILURE}`.<br />For example: "FETCH_TODOS<b>_REQUEST</b>" or "LOGIN<b>_REQUEST</b>". For creating constants, we recommend <b>createActionTypes</b> function</p>
+    <pre>
+        <code class="javascript">
+            // ./store.ts
+            
+            import { applyMiddleware, createStore } from "redux";
+            import rootReducer from "./rootReducer";
+            import rootSagas from "./rootSaga";
+            import { routerMiddleware } from "connected-react-router";
+            import { composeWithDevTools } from "redux-devtools-extension";
+            import { History, createBrowserHistory } from "history";
+            import createSagaMiddleware from "redux-saga";
+            
+            <b>import { createLoaderMiddleware } from "react-redux-jedi";</b>
+            
+            const sagaMiddleware = createSagaMiddleware();
+
+            <b>const loaderMiddleware = createLoaderMiddleware();</b>
+            
+            const composer = composeWithDevTools({ trace: true, traceLimit: 25 });
+            export const history = createBrowserHistory();
+            
+            export const configureStore = (history: History) => {
+              const store = createStore(
+                rootReducer(history),
+                undefined,
+                composer(
+                  applyMiddleware(
+                    sagaMiddleware,
+
+                    <b>loaderMiddleware</b>,
+
+                    routerMiddleware(history),
+                  ),
+                ),
+              );
+            
+              sagaMiddleware.run(rootSagas);
+            
+              return { store };
+            };
+
+        </code>
+    </pre>
+    <p>Arguments <b>const loaderMiddleware = createLoaderMiddleware(exceptions?: string[] | undefined);</b>:</p>
+    <ul class="list">
+        <li><b>exceptions (optional)</b> - a list of constants to be ignored</li>
+    </ul>
+    <pre>
+        <code class="javascript">
+            // ./rootReducer.ts
+
+            import { combineReducers } from "redux";
+            import { connectLoader } from "react-redux-jedi";
+            
+            export default () => {
+              const rootReducer = combineReducers({
+
+                // ... other reducers
+
+                <b>loaders: connectLoader,</b>
+              });
+          
+              return (state, action) => {
+                return rootReducer(state, action);
+              };
+            };
+
+        </code>
+    </pre>
+    <pre>
+        <code class="javascript">
+            // ./components.tsx
+
+            import { useSelector } from "react-redux";
+            import { getLoaderStatus, getLoadersCount, getRequestLoaderStatus } from "react-redux-jedi";
+            import constants from "./constants"
+
+            const Todos = () => {
+
+                // global loader
+                const globalLoader = useSelector(getLoaderStatus())
+
+                // number of active loaders
+                const loadersCount = useSelector(getLoadersCount())
+
+                // local loader - gets the loader status by the name of the action constant
+                const todosLoader = useSelector(getRequestLoaderStatus(constants.FETCH_TODOS_REQUEST))
+
+                return ...
+            }
+
         </code>
     </pre>
 </div>
