@@ -810,7 +810,26 @@
         <h3>useSearchDebounce</h3>
         <p>Search Debounce Hook. Sets the minimum character value to search, removes special characters from the string, removes leading and trailing blank spaces, converts the string to lowercase, sets the delay time before requesting to the server.</p>
     </div>
-    <p>How to use:</p>
+    <p>How to use: <b>useSearchDebounce(
+        searchStr: string | undefined,
+        delay: number,
+        minStrLength?: number,
+        options?: SearchDebounceOptions
+      )</b></p>
+    <p>Arguments:</p>
+    <ul class="list">
+        <li><b>searchStr (required)</b> - Search string</li>
+        <li><b>delay (required)</b> - Delay in milliseconds</li>
+        <li><b>minStrLength (optional)</b> - Sets the minimum character value to search</li>
+        <li><b>options (optional)</b> - SearchDebounceOptions</li>
+    </ul>
+    <p>SearchDebounceOptions:</p>
+    <ul class="list">
+        <li><b>trim (optional)</b> - by default = true</li>
+        <li><b>toLowerCase (optional)</b> - by default = true</li>
+        <li><b>regExp (optional)</b> - by default = /[&\/\\#,+()$~%.'":*?<>{}]/g</li>
+        <li><b>replaceTo (optional)</b> - by default = ""</li>
+    </ul>
     <pre>
         <code class="javascript">
             // ./components.tsx
