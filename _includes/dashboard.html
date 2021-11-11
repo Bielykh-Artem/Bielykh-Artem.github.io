@@ -806,4 +806,39 @@
 
         </code>
     </pre>
+    <div id="useSearchDebounce">
+        <h3>useSearchDebounce</h3>
+        <p>Search Debounce Hook. Sets the minimum character value to search, removes special characters from the string, removes leading and trailing blank spaces, converts the string to lowercase, sets the delay time before requesting to the server.</p>
+    </div>
+    <p>How to use:</p>
+    <pre>
+        <code class="javascript">
+            // ./components.tsx
+            import React, { useEffect, useState } from "react";
+            import { useDispatch } from "react-redux";
+            import { useSearchDebounce } from "react-redux-jedi";
+
+            const Test = () => {
+                const [searchStr, setSearchStr] = useState("");
+                const dispatch = useDispatch();
+                const debounceSearch = useSearchDebounce(
+                    searchStr, 500, 3,
+                    {
+                        trim: true,
+                        toLowerCase: true,
+                        regExp: /[&\/\\#,+()$~%.'":*?<>{}]/g,
+                        replaceTo: ""
+                    }
+                );
+                
+                useEffect(() => {
+                  debounceSearch && dispatch(...);
+                }, [debounceSearch, dispatch]);
+                
+
+                return ...
+            }
+
+        </code>
+    </pre>
 </div>
